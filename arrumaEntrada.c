@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "./struct.c"
 #include "arrumaEntrada.h"
 
 #define COL 2
@@ -124,8 +123,6 @@ char **alocaValoresDeEntradaChar(char **input, int linhas, FILE *file){
 	return input;
 }
 
-
-
 int** alocaDadosDeEntradaInt(int **input){
 	FILE *file = fopen("./teste.in", "r");
 	
@@ -136,7 +133,6 @@ int** alocaDadosDeEntradaInt(int **input){
 		rewind(file);
 		input = alocaValoresDeEntrada(input, linhas, file);
 		imprimeMatriz(input, linhas);
-
 
 	} else
 		printf("Arquivo Inexistente\n");
@@ -165,7 +161,6 @@ char** alocaDadosDeEntradaChar(char **input){
 	fclose(file);
 	return input;
 }
-
 
 void liberaMatriz (int **input){
 	FILE *file = fopen("./teste.in", "r");
