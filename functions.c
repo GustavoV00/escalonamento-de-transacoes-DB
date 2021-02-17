@@ -78,12 +78,20 @@ void liberaMatrizDoGrafo(int **matriz, int tam){
 // ------------------------------------------------------------------------//
 // Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
 
+
+
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars){
+    FILE *file = fopen("./teste.in", "r");
+    int tam = quantidadeDeLinhas(file) + 1;
 
-    
+    rewind(file);
+
+    //verificarSeriabilidadeCaso1()
+    //verificarSeriablidadeCaso2()
+    //verificarSeriablidadeCaso3()
 
 
-
+    fclose(file);
     return grafo;
 }
 

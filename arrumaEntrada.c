@@ -132,7 +132,7 @@ int** alocaDadosDeEntradaInt(int **input){
 		input = alocaMatriz(linhas, input);
 		rewind(file);
 		input = alocaValoresDeEntrada(input, linhas, file);
-		imprimeMatriz(input, linhas);
+		//imprimeMatriz(input, linhas);
 
 	} else
 		printf("Arquivo Inexistente\n");
@@ -151,7 +151,7 @@ char** alocaDadosDeEntradaChar(char **input){
 		input = alocaMatrizChar(linhas, input);
 		rewind(file);
 		input = alocaValoresDeEntradaChar(input, linhas, file);
-		imprimeMatrizChar(input, linhas);
+		//imprimeMatrizChar(input, linhas);
 
 
 	} else
