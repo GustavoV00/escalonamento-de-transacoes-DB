@@ -78,6 +78,12 @@ void liberaMatrizDoGrafo(int **matriz, int tam){
 // ------------------------------------------------------------------------//
 // Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
 
+void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito){
+
+    printf("Conflito%d: %d %d %c %c e %d %d %c %c\n", conflito, inputNumeros[i][0], inputNumeros[i][1], inputChars[i][0], inputChars[i][1], inputNumeros[k][0], inputNumeros[k][1], inputChars[k][0], inputChars[k][1]);
+    
+
+}
 
 
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars){
@@ -90,6 +96,37 @@ struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inpu
     //verificarSeriablidadeCaso2()
     //verificarSeriablidadeCaso3()
 
+    int i = 0;
+    while(i < tam){
+
+        int k = i;
+        while(k < tam && inputChars[k][0] != 'C'){
+            // Primeiro if, Acontece uma escrita depois de uma leitura
+            // 
+            if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'W' && inputChars[k][0] == 'R') && (inputChars[i][1] == inputChars[k][1])){
+                int conflito = 1;
+                imprimeConflito(inputNumeros, inputChars, i, k, conflito);
+                //int linha = inputNumeros[k][1];
+                //int coluna = inputNumeros[i][1];
+                //grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
+            }
+
+            if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'R' && inputChars[k][0] == 'W') && (inputChars[i][1] == inputChars[k][1])){
+                int conflito = 2;
+                imprimeConflito(inputNumeros, inputChars, i, k, conflito);
+            }
+
+
+            if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'W' && inputChars[k][0] == 'W') && (inputChars[i][1] == inputChars[k][1])){
+                int conflito = 3;
+                imprimeConflito(inputNumeros, inputChars, i, k, conflito);
+            }
+
+
+            k += 1;
+        }
+        i += 1;
+    }
 
     fclose(file);
     return grafo;
