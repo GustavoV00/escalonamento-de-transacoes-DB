@@ -17,9 +17,11 @@ int main(){
 
 	grafo = iniciaGrafo(inputNumeros);
 	printf("\n");
-	imprimeMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
 
 	grafo = seriabilidade(grafo, inputNumeros, inputChars);
+	grafo = visaoEquivalente(grafo, inputNumeros, inputChars);
+
+	imprimeMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
 
 
 	liberaMatrizDoGrafo(grafo -> matriz, grafo -> vertices);

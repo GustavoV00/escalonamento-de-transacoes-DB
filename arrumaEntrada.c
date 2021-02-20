@@ -23,7 +23,7 @@ int quantidadeDeLinhas(FILE *file){
 			quantidade++;
 	}
 
-	return quantidade;
+	return quantidade + 1;
 }
 
 int **alocaMatriz(int linhas, int **input){
@@ -128,7 +128,6 @@ int** alocaDadosDeEntradaInt(int **input){
 	
 	if(verificaNulo(file) == 1){
 		int linhas = quantidadeDeLinhas(file);
-		linhas += 1;
 		input = alocaMatriz(linhas, input);
 		rewind(file);
 		input = alocaValoresDeEntrada(input, linhas, file);
@@ -147,7 +146,6 @@ char** alocaDadosDeEntradaChar(char **input){
 	
 	if(verificaNulo(file) == 1){
 		int linhas = quantidadeDeLinhas(file);
-		linhas += 1;
 		input = alocaMatrizChar(linhas, input);
 		rewind(file);
 		input = alocaValoresDeEntradaChar(input, linhas, file);

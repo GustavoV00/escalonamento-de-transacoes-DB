@@ -72,10 +72,20 @@ void liberaMatrizDoGrafo(int **matriz, int tam){
 	free(matriz);
 }
 
+int **insereNoGrafo(struct Grafo *grafo, int linha, int coluna){
+
+    if(grafo -> matriz[linha][coluna] == 0){
+        grafo -> matriz[linha][coluna] = 1;
+        grafo -> arcos += 1;
+    } 
+
+    return grafo -> matriz;
+}
+
 
 
 // Daqui para cima são as funções do grafo
-// ------------------------------------------------------------------------//
+// --------------------------------------------------------------//
 // Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
 
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito){
@@ -88,38 +98,35 @@ void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int co
 
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars){
     FILE *file = fopen("./teste.in", "r");
-    int tam = quantidadeDeLinhas(file) + 1;
-
+    int tam = quantidadeDeLinhas(file);
     rewind(file);
-
-    //verificarSeriabilidadeCaso1()
-    //verificarSeriablidadeCaso2()
-    //verificarSeriablidadeCaso3()
 
     int i = 0;
     while(i < tam){
 
         int k = i;
-        while(k < tam && inputChars[k][0] != 'C'){
+        while(inputNumeros[k][1] != inputNumeros[i][1] || inputChars[k][0] != 'C'){
             // Primeiro if, Acontece uma escrita depois de uma leitura
-            // 
+            int linha = inputNumeros[k][1] - 1;
+            int coluna = inputNumeros[i][1] - 1;
+
             if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'W' && inputChars[k][0] == 'R') && (inputChars[i][1] == inputChars[k][1])){
                 int conflito = 1;
                 imprimeConflito(inputNumeros, inputChars, i, k, conflito);
-                //int linha = inputNumeros[k][1];
-                //int coluna = inputNumeros[i][1];
-                //grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
+                grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
             }
 
             if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'R' && inputChars[k][0] == 'W') && (inputChars[i][1] == inputChars[k][1])){
                 int conflito = 2;
                 imprimeConflito(inputNumeros, inputChars, i, k, conflito);
+                grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
             }
 
 
             if((inputNumeros[i][1] != inputNumeros[k][1]) && (inputChars[i][0] == 'W' && inputChars[k][0] == 'W') && (inputChars[i][1] == inputChars[k][1])){
                 int conflito = 3;
                 imprimeConflito(inputNumeros, inputChars, i, k, conflito);
+                grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
             }
 
 
@@ -132,4 +139,58 @@ struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inpu
     return grafo;
 }
 
+int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars){
+    FILE *file = fopen("./teste.in", "r");
+    int tam = quantidadeDeLinhas(file);
+    int quantidade = 0;
 
+    int i = 0;
+    while(i < tam){
+
+        if(inputChars[i][0] == 'C' && inputChars[i+1][0] == 'C')
+            quantidade += 1;
+
+        i += 1;
+    }    
+
+    fclose(file);
+    int quantidade;
+
+}
+
+int calculaInicioFimSubMat(int **inputNumeros, char **inputChars, int tam){
+    FILE *file = fopen("./teste.in", "r");
+    rewind(file);
+    int tam = quantidadeDeLinhas(file);
+    int inicioFim[tam];
+
+    int i = 0;
+    while(i < tam){
+
+
+        i += 1;
+    }
+
+
+    fclose(file);
+    return inicioFim;
+}
+
+struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars){
+    int subMat = calculaQuantidadeDeSubMatrizes(inputNumeros, inputChars);
+    int tamSubMat[subMat*2];
+
+
+    int i = 0;
+    while(i < subMat){
+
+        int tamSubMat = calculaInicioFimSubMat(inputNumeros, inputChars, subMat);
+
+
+        i += 1;
+    }
+
+
+
+    return grafo;
+}

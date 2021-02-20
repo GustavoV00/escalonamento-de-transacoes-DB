@@ -15,5 +15,6 @@ void imprimeMatrizDoGrafo(int **matriz, int tam);
 void liberaMatrizDoGrafo(int **matriz, int tam);
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars);
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito);
+struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars);
 
 #endif
