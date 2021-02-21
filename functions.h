@@ -16,5 +16,9 @@ void liberaMatrizDoGrafo(int **matriz, int tam);
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars);
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito);
 struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars);
+int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMat, int **inicioFim);
+int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i);
+char **subMatrizChar(char **inputChars, int **inicioFim, char **subChar, int i);
+void desalocaSubMatriz(int **matriz, int linha);
 
 #endif

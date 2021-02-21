@@ -4,7 +4,6 @@
 #include "./functions.h"
 
 
-
 int main(){
 	int  **inputNumeros = NULL;
 	char **inputChars = NULL;
@@ -14,7 +13,6 @@ int main(){
 	printf("\n");
 	inputChars = alocaDadosDeEntradaChar(inputChars);
 
-
 	grafo = iniciaGrafo(inputNumeros);
 	printf("\n");
 
@@ -22,7 +20,6 @@ int main(){
 	grafo = visaoEquivalente(grafo, inputNumeros, inputChars);
 
 	imprimeMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
-
 
 	liberaMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
 	liberaMatriz((int **) inputNumeros);

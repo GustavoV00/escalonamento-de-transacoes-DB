@@ -55,7 +55,7 @@ char **alocaMatrizChar(int linhas, char **input){
 void imprimeMatriz(int **input, int linhas){
 
 	for (int i = 0; i < linhas; i++){
-		printf("%d -> ", i+1);
+		printf("%d -> ", i);
 		for (int j = 0; j < COL; j++){
 			printf("%d ", input[i][j]);
 		}
@@ -67,7 +67,7 @@ void imprimeMatriz(int **input, int linhas){
 void imprimeMatrizChar(char **input, int linhas){
 
 	for (int i = 0; i < linhas; i++){
-		printf("%d -> ", i+1);
+		printf("%d -> ", i);
 		for (int j = 0; j < COL; j++){
 			printf("%c ", input[i][j]);
 		}
@@ -164,7 +164,7 @@ void liberaMatriz (int **input){
 	FILE *file = fopen("./teste.in", "r");
 	rewind(file);
 
-	for (int i = 0; quantidadeDeLinhas(file); i++){
+	for (int i = 0; i < quantidadeDeLinhas(file)-1; i++){
 		free(input[i]);
 	}
 	free(input);

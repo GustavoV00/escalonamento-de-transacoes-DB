@@ -3,6 +3,7 @@
 #include "./functions.h"
 #include "./arrumaEntrada.h"
 
+#define COL 2
 
 int calculaVertices(int **inputNumeros){
     FILE *file = fopen("./teste.in", "r");
@@ -10,7 +11,7 @@ int calculaVertices(int **inputNumeros){
     int quantidade = quantidadeDeLinhas(file);
 
     int maior = 0;
-    for (int i = 0; i < quantidade+1; i++){
+    for (int i = 0; i < quantidade; i++){
         if (inputNumeros[i][1] > maior){
             maior = inputNumeros[i][1];
         }
@@ -95,7 +96,6 @@ void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int co
 
 }
 
-
 struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars){
     FILE *file = fopen("./teste.in", "r");
     int tam = quantidadeDeLinhas(file);
@@ -129,9 +129,9 @@ struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inpu
                 grafo -> matriz = insereNoGrafo(grafo, linha, coluna);
             }
 
-
             k += 1;
         }
+
         i += 1;
     }
 
@@ -141,7 +141,7 @@ struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inpu
 
 int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars){
     FILE *file = fopen("./teste.in", "r");
-    int tam = quantidadeDeLinhas(file);
+    int tam = quantidadeDeLinhas(file)-1;
     int quantidade = 0;
 
     int i = 0;
@@ -154,43 +154,137 @@ int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars){
     }    
 
     fclose(file);
-    int quantidade;
+    return quantidade;
 
 }
 
-int calculaInicioFimSubMat(int **inputNumeros, char **inputChars, int tam){
+
+int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMat, int **inicioFim){
     FILE *file = fopen("./teste.in", "r");
-    rewind(file);
-    int tam = quantidadeDeLinhas(file);
-    int inicioFim[tam];
+    int quantidade = quantidadeDeLinhas(file)-1;
+    int fim = 0;
+    int inicio = 0;
+
+    inicioFim = alocaMatrizDoGrafo(inicioFim, subMat);
 
     int i = 0;
-    while(i < tam){
+    int k = 0;
+    while(i < quantidade){
+        if(inputChars[i][0] == 'C' && inputChars[i+1][0] == 'C'){
+            if (k == 0){
+                inicio = 0;
+                fim = i - 1;
+                inicioFim[k][0] = inicio;
+                inicioFim[k][1] = fim;
+                k += 1;
 
+            } else {
+                inicio = fim + 3;
+                fim = i - 1;
+                inicioFim[k][0] = inicio;
+                inicioFim[k][1] = fim;
+                k += 1;
+
+            }
+        }
 
         i += 1;
     }
 
-
-    fclose(file);
     return inicioFim;
+}
+
+
+int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i){
+
+    int u = 0;
+    for (int k = inicioFim[i][0]; k <= inicioFim[i][1]; k++){
+        for (int j = 0; j < COL; j++){
+            subInt[u][j] = inputNumeros[k][j];
+            printf("entrei aqui: %d e %d e %d\n", k, inputNumeros[k][j], subInt[u][j]);
+
+        }
+        u += 1;
+    }
+
+    return subInt;
+}
+
+char **subMatrizChar(char **inputChars, int **inicioFim, char **subChar, int i){
+
+    int u = 0;
+    for (int k = inicioFim[i][0]; k <= inicioFim[i][1]; k++){
+        for (int j = 0; j < COL; j++){
+            subChar[u][j] = inputChars[k][j];
+        }
+        u += 1;
+    }
+
+    return subChar;
+}
+
+void desalocaSubMatriz(int **matriz, int linha){
+
+	for (int i = 0; i < linha; i++){
+		free(matriz[i]);
+	}
+	free(matriz);
+
+}
+
+int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
+    int flag = 0;
+
+    int i = 0;
+    while(i < linha){
+        printf("%d e %d\n", subInt[i][0], subInt[i][1]);
+        
+        // Como terminar de implementar o código
+        // Marca o primeiro como atual e joga todos os iguais para cima
+        // e o resto para baixo, e verificar a seriabilidade
+        // caso tenha, joga os iguais para baixo e os outros para cima
+        i += 1;
+    }
+
+    printf("\n");
+    return flag;
 }
 
 struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars){
     int subMat = calculaQuantidadeDeSubMatrizes(inputNumeros, inputChars);
-    int tamSubMat[subMat*2];
+    int flags[subMat];
+    int **inicioFim;
+    int **subInt = NULL;
+    char **subChar = NULL;
 
+    printf("%d\n", subMat);
 
     int i = 0;
     while(i < subMat){
+        
+        inicioFim = calculaInicioFimSubMatriz(inputNumeros, inputChars, subMat, inicioFim);
+        printf("inicio:%d e Fim:%d\n", inicioFim[i][0], inicioFim[i][1]);
 
-        int tamSubMat = calculaInicioFimSubMat(inputNumeros, inputChars, subMat);
+        int linha = inicioFim[i][1] - inicioFim[i][0];
+        subInt = alocaMatriz(linha+1, subInt);
+        subChar = alocaMatrizChar(linha+1, subChar);
 
+        subInt = subMatrizInt(inputNumeros, inicioFim, subInt, i);
+        subChar = subMatrizChar(inputChars, inicioFim, subChar, i);
+
+        //imprimeMatriz(subInt, linha+1);
+        printf("\n");
+        //imprimeMatrizChar(subChar, linha+1);
+        printf("\n");
 
         i += 1;
+
+        flags[i] = testaAlgoritimoNaSubMatriz(subInt, subChar, linha+1);
+
+
+        desalocaSubMatriz((int **) subInt, linha+1);
+        desalocaSubMatriz((int **) subChar, linha+1);
     }
-
-
 
     return grafo;
 }
