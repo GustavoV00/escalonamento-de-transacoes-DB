@@ -232,21 +232,69 @@ void desalocaSubMatriz(int **matriz, int linha){
 
 }
 
-int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
-    int flag = 0;
+int *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, int *atributos){
+    int quantidade = 0;
+    for(int i = 0; i < linha+1; i++)
+        atributos[i] = 0;
+
 
     int i = 0;
     while(i < linha){
-        printf("%d e %d\n", subInt[i][0], subInt[i][1]);
         
-        // Como terminar de implementar o código
-        // Marca o primeiro como atual e joga todos os iguais para cima
-        // e o resto para baixo, e verificar a seriabilidade
-        // caso tenha, joga os iguais para baixo e os outros para cima
+        int k = 0;
+        while(k < linha){
+            if(subInt[i][1] == atributos[k])
+                break;
+
+            else if(subInt[i][1] != atributos[k] && atributos[k] == 0){
+                atributos[k] = subInt[i][1];
+                quantidade += 1;
+                break;
+            }
+            k += 1;
+        }
+        i += 1;
+    }
+
+    for(int k = 0; k < linha; k++)
+        printf("%d ", atributos[k]);
+    printf("\n");
+        
+    return atributos;
+}
+
+int quantidadeDeAtributos(int *atributos){
+    int quantidade = 0;
+    
+    for(int i = 0; atributos[i] != 0; i++)
+        quantidade += 1;
+
+    return quantidade;
+}
+
+int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
+    int flag = 0;
+    int *atributos = malloc(linha+1 * sizeof(char));
+    atributos = calculaQuantosAtributosExistemNaMatriz(subInt, subChar, linha, atributos);
+    int qtdAtributos = quantidadeDeAtributos(atributos);
+
+    int i = 0;
+    while(i < qtdAtributos){
+        printf("Aqui: %d e %d\n", subInt[i][0], subInt[i][1]);
+        
+        for(int k = 0; k < linha; k++){
+            if(atributos[i] == subInt[k][1]){
+                
+
+
+            }
+        }
+
         i += 1;
     }
 
     printf("\n");
+    free(atributos);
     return flag;
 }
 
@@ -279,6 +327,7 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
 
         i += 1;
 
+        // Cria uma flag se existe uma visao equivalente.
         flags[i] = testaAlgoritimoNaSubMatriz(subInt, subChar, linha+1);
 
 

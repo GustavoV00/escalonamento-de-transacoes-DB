@@ -20,5 +20,7 @@ int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMa
 int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i);
 char **subMatrizChar(char **inputChars, int **inicioFim, char **subChar, int i);
 void desalocaSubMatriz(int **matriz, int linha);
+int *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, int *atributos);
+int quantidadeDeAtributos(int *atributos);
 
 #endif
