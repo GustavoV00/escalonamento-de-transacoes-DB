@@ -201,7 +201,7 @@ int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i){
     for (int k = inicioFim[i][0]; k <= inicioFim[i][1]; k++){
         for (int j = 0; j < COL; j++){
             subInt[u][j] = inputNumeros[k][j];
-            printf("entrei aqui: %d e %d e %d\n", k, inputNumeros[k][j], subInt[u][j]);
+            //printf("entrei aqui: %d e %d e %d\n", k, inputNumeros[k][j], subInt[u][j]);
 
         }
         u += 1;
@@ -232,7 +232,8 @@ void desalocaSubMatriz(int **matriz, int linha){
 
 }
 
-int *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, int *atributos){
+// Esse atributos é o tes
+int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, int *atributos){
     int quantidade = 0;
     for(int i = 0; i < linha+1; i++)
         atributos[i] = 0;
@@ -263,7 +264,38 @@ int *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int li
     return atributos;
 }
 
-int quantidadeDeAtributos(int *atributos){
+char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, char *atributos){
+    char quantidade = 0;
+    for(int i = 0; i < linha+1; i++)
+        atributos[i] = '0';
+
+
+    int i = 0;
+    while(i < linha){
+        
+        int k = 0;
+        while(k < linha){
+            if(subChar[i][1] == atributos[k])
+                break;
+
+            else if(subChar[i][1] != atributos[k] && atributos[k] == '0'){
+                atributos[k] = subChar[i][1];
+                quantidade += 1;
+                break;
+            }
+            k += 1;
+        }
+        i += 1;
+    }
+
+    for(int k = 0; k < linha; k++)
+        printf("%c ", atributos[k]);
+    printf("\n\n");
+        
+    return atributos;
+}
+
+int quantidadeDeTes(int *atributos){
     int quantidade = 0;
     
     for(int i = 0; atributos[i] != 0; i++)
@@ -272,29 +304,134 @@ int quantidadeDeAtributos(int *atributos){
     return quantidade;
 }
 
-int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
-    int flag = 0;
-    int *atributos = malloc(linha+1 * sizeof(char));
-    atributos = calculaQuantosAtributosExistemNaMatriz(subInt, subChar, linha, atributos);
-    int qtdAtributos = quantidadeDeAtributos(atributos);
+int quantidadeDeAtributos(char *atributos){
+    int quantidade = 0;
+    
+    for(int i = 0; atributos[i] != '0'; i++)
+        quantidade += 1;
+
+    return quantidade;
+}
+
+int **copiaSubInt(int **subInt, int **subIntAux, int linha){
+
+    for (int i = 0; i < linha; i++)
+        for(int j = 0; j < COL; j++)
+            subIntAux[i][j] = subInt[i][j];
+
+    return subIntAux;
+}
+
+char **copiaSubChar(char **subChar, char **subCharAux, int linha){
+
+    for (int i = 0; i < linha; i++)
+        for(int j = 0; j < COL; j++)
+            subCharAux[i][j] = subChar[i][j];
+
+    return subCharAux;
+}
+
+int verificaCondicaoUm(){
+
+    return 1;
+}
+
+
+int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos){
+    int flag = 0, auxT1, auxT2;
 
     int i = 0;
     while(i < qtdAtributos){
-        printf("Aqui: %d e %d\n", subInt[i][0], subInt[i][1]);
-        
         for(int k = 0; k < linha; k++){
-            if(atributos[i] == subInt[k][1]){
-                
+            if(subChar[k][0] == 'W' && subChar[k][1] == atributos[i]){
+                auxT1 = subInt[k][1];
+            }
+        }
 
+        for(int k = 0; k < linha; k++){
+            if(subCharAux[k][0] == 'W' && subCharAux[k][1] == atributos[i]){
+                auxT2 = subIntAux[k][1];
 
             }
         }
+        
+        printf("Here:%d e %d\n", auxT1, auxT2);
+        if(auxT1 == auxT2)
+            flag = 1;
 
         i += 1;
     }
 
+
+
+    return flag;
+}
+
+int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
+    int flag = 0, auxInt[1];
+    int **subIntAux = NULL;
+    char **subCharAux = NULL;
+
+    subIntAux = alocaMatriz(linha, subIntAux);
+    subCharAux = alocaMatrizChar(linha, subCharAux);
+
+    char auxChar[2];
+    int *tes = malloc(linha+1 * sizeof(int));
+    char *atributos = malloc(linha+1 * sizeof(char));
+    tes = calculaQuantosTTExistemNaMatriz(subInt, subChar, linha, tes);
+    atributos = calculaQuantosAtributosExistemNaMatriz(subInt, subChar, linha, atributos);
+    int qtdtes = quantidadeDeTes(tes);
+    int qtdAtributos = quantidadeDeAtributos(atributos);
+
+    int i = 0;
+    while(i < qtdtes){
+        subIntAux = copiaSubInt(subInt, subIntAux, linha);
+        subCharAux = copiaSubChar(subChar, subCharAux, linha);
+
+        int h = 0;
+        for(int k = 0; k < linha; k++){
+            if(tes[i] == subInt[k][1]){
+                int a = k;
+                while(a > h){
+                    auxInt[0] = subIntAux[a-1][0];
+                    auxInt[1] = subIntAux[a-1][1];
+                    subIntAux[a-1][0] = subIntAux[a][0];
+                    subIntAux[a-1][1] = subIntAux[a][1];
+                    subIntAux[a][0] = auxInt[0];
+                    subIntAux[a][1] = auxInt[1];
+
+                    auxChar[0] = subCharAux[a-1][0];
+                    auxChar[1] = subCharAux[a-1][1];
+                    subCharAux[a-1][0] = subCharAux[a][0];
+                    subCharAux[a-1][1] = subCharAux[a][1];
+                    subCharAux[a][0] = auxChar[0];
+                    subCharAux[a][1] = auxChar[1];
+
+                    a -= 1;
+                }
+                int z = verificaCondicaoUm();
+                //int x = verificaCondicaoDois(subInt, subIntAux, subChar, subCharAux);
+                int c = verificaCondicaoTres(subInt, subIntAux, subChar, subCharAux, linha, atributos, qtdAtributos);
+                if(z == 1 && c == 1)
+                    flag = 1;
+
+                h += 1;
+            }
+
+
+        }
+
+        imprimeMatriz(subIntAux, linha);
+        printf("\n");
+        imprimeMatrizChar(subCharAux, linha);
+        printf("\n");
+        i += 1;
+    }
+
+    desalocaSubMatriz((int **) subIntAux, linha);
+    desalocaSubMatriz((int **) subCharAux, linha);
     printf("\n");
-    free(atributos);
+    free(tes);
     return flag;
 }
 
@@ -329,6 +466,7 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
 
         // Cria uma flag se existe uma visao equivalente.
         flags[i] = testaAlgoritimoNaSubMatriz(subInt, subChar, linha+1);
+        printf("Flags: %d \n", flags[i]);
 
 
         desalocaSubMatriz((int **) subInt, linha+1);
