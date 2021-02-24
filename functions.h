@@ -4,6 +4,7 @@
 struct Grafo{
 	int vertices; // Quantidade de vértices do grafo
 	int arcos; // Quantidade de arcos de um grafo
+
 	int **matriz; // Matriz adjacência "Grafo"
 };
 
@@ -29,6 +30,7 @@ char **copiaSubChar(char **subChar, char **subCharAux, int linha);
 int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *z);
 int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c);
 int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c);
-
+int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes, char *atributos);
+void imprimeResultadoFinal(struct Grafo *grafo, int *tes, int i, int qtd, int flag);
 
 #endif
