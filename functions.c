@@ -331,21 +331,66 @@ char **copiaSubChar(char **subChar, char **subCharAux, int linha){
     return subCharAux;
 }
 
-int verificaCondicaoUm(){
-
-    return 1;
-}
-
-
-int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos){
-    int flag = 0, auxT1, auxT2;
+// Leitura inicial
+int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *z){
+    int flag = 1;
+    int auxT1, auxT2;
 
     int i = 0;
     while(i < qtdAtributos){
+        //printf("D:%d e %d e %c\n", i, qtdAtributos, atributos[i]);
+        for(int k = 0; k < linha; k++){
+            if(subChar[k][0] == 'R' && subChar[k][1] == atributos[i]){
+                //printf("test1:%d\n", k);
+                auxT1 = subInt[k][1];
+                break;
+            } 
+        }
+
+        for(int k = 0; k < linha; k++){
+            if(subCharAux[k][0] == 'R' && subCharAux[k][1] == atributos[i]){
+
+                //printf("test2:%d\n", k);
+                auxT2 = subIntAux[k][1];
+                break;
+            }
+        }
+        
+        z[i] = (auxT1 == auxT2) ? 1 : 0;
+        printf("Here:%d e %d = %d\n", auxT1, auxT2, z[i]);
+
+
+        i += 1;
+    }
+
+    for(int i = 0; i < qtdAtributos; i++){
+        if(z[i] == 0)
+            flag = 0;
+    }
+
+    return flag;
+}
+
+// Atualização na leitura
+int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *x){
+    int flag = 1;
+
+
+    return flag;
+}
+
+// Escrita no final
+int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c){
+    int flag = 1;
+    int auxT1, auxT2;
+
+    int i = 0;
+    while(i < qtdAtributos){
+        //printf("D:%d e %d e %c\n", i, qtdAtributos, atributos[i]);
         for(int k = 0; k < linha; k++){
             if(subChar[k][0] == 'W' && subChar[k][1] == atributos[i]){
                 auxT1 = subInt[k][1];
-            }
+            } 
         }
 
         for(int k = 0; k < linha; k++){
@@ -355,15 +400,18 @@ int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **s
             }
         }
         
-        printf("Here:%d e %d\n", auxT1, auxT2);
-        if(auxT1 == auxT2)
-            flag = 1;
+        c[i] = (auxT1 == auxT2) ? 1 : 0;
+        //printf("Here:%d e %d = %d\n", auxT1, auxT2, c[i]);
+
 
         i += 1;
     }
-
-
-
+    
+    for(int i = 0; i < qtdAtributos; i++){
+        if(c[i] == 0)
+            flag = 0;
+    }
+    printf("\n");
     return flag;
 }
 
@@ -378,10 +426,16 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
     char auxChar[2];
     int *tes = malloc(linha+1 * sizeof(int));
     char *atributos = malloc(linha+1 * sizeof(char));
+
     tes = calculaQuantosTTExistemNaMatriz(subInt, subChar, linha, tes);
     atributos = calculaQuantosAtributosExistemNaMatriz(subInt, subChar, linha, atributos);
+
     int qtdtes = quantidadeDeTes(tes);
     int qtdAtributos = quantidadeDeAtributos(atributos);
+    
+    int *z = malloc(qtdtes * sizeof(int));
+    int *x = malloc(qtdtes * sizeof(int));
+    int *c = malloc(qtdtes * sizeof(int));
 
     int i = 0;
     while(i < qtdtes){
@@ -409,18 +463,22 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
 
                     a -= 1;
                 }
-                int z = verificaCondicaoUm();
-                //int x = verificaCondicaoDois(subInt, subIntAux, subChar, subCharAux);
-                int c = verificaCondicaoTres(subInt, subIntAux, subChar, subCharAux, linha, atributos, qtdAtributos);
-                if(z == 1 && c == 1)
-                    flag = 1;
-
                 h += 1;
             }
 
 
         }
+        z[i] = verificaCondicaoUm(subInt, subIntAux, subChar, subCharAux, linha, atributos, qtdAtributos, z);
 
+        x[i] = verificaCondicaoDois(subInt, subIntAux, subChar, subCharAux, linha, atributos, qtdAtributos, x);
+
+        c[i] = verificaCondicaoTres(subInt, subIntAux, subChar, subCharAux, linha, atributos, qtdAtributos, c);
+        
+        printf("z = %d, x = ?, c = %d | %d\n", z[i], c[i], i);
+        if(z[i] == 1 && c[i] == 1)
+            flag = 1;
+
+        printf("\n");
         imprimeMatriz(subIntAux, linha);
         printf("\n");
         imprimeMatrizChar(subCharAux, linha);
@@ -430,8 +488,13 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha){
 
     desalocaSubMatriz((int **) subIntAux, linha);
     desalocaSubMatriz((int **) subCharAux, linha);
+    printf("------------------------------------------------------");
     printf("\n");
     free(tes);
+    free(atributos);
+    free(z);
+    free(x);
+    free(c);
     return flag;
 }
 

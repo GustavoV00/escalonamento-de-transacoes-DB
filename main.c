@@ -24,5 +24,6 @@ int main(){
 	liberaMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
 	liberaMatriz((int **) inputNumeros);
 	liberaMatriz((int **) inputChars);
+	
 	return 0;
 }

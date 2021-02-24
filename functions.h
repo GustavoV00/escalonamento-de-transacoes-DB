@@ -26,8 +26,9 @@ int quantidadeDeTes(int *tes);
 int quantidadeDeAtributos(char *atributos);
 int **copiaSubInt(int **subInt, int **subIntAux, int linha);
 char **copiaSubChar(char **subChar, char **subCharAux, int linha);
-int verificaCondicaoUm();
-int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos);
+int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *z);
+int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c);
+int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c);
 
 
 #endif
