@@ -1,12 +1,21 @@
 #ifndef __FUNCTIONS__
 #define __FUNCTIONS__
 
+#include <stdbool.h>
+
 struct Grafo{
 	int vertices; // Quantidade de vértices do grafo
 	int arcos; // Quantidade de arcos de um grafo
 
 	int **matriz; // Matriz adjacência "Grafo"
 };
+
+
+int searchArr(int a[], int n, int mobile);
+int getMobile(int a[], bool dir[], int n);
+int *printOnePerm(int a[], bool dir[], int n, int *vetor);
+int fact(int n);
+int **printPermutation(int n, int **permutacoes);
 
 int calculaVertices(int **inputNumeros);
 int **alocaMatrizDoGrafo(int **matriz, int tam);
