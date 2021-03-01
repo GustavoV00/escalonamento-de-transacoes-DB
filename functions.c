@@ -118,10 +118,9 @@ int **insereNoGrafo(struct Grafo *grafo, int linha, int coluna){
 // Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
 
 
-/// O Algoritimo abaixo serve para fazer a permutação na visão equivalente
+/// O Algoritimo abaixo serve para fazer a permutação na visão equivalente. Até a próxima marcação, ainda é as funções do algoritimo Johson and Trotter.
 
-/// Algoritimo usado para fazer a permutação. Foi utilizado um algoritimo iterativo, porque eu precisava gravar os dados da permutação em uma matriz. Que server para rodar em um loop no código. 
-/// Johnson and Trotter algorithm. 
+/// Algoritimo usado para fazer a permutação. Foi utilizado um algoritimo iterativo, porque eu precisava gravar os dados da permutação em uma matriz. Que serve para rodar em um loop no código. 
 
 bool LEFT_TO_RIGHT = true; 
 bool RIGHT_TO_LEFT = false; 
@@ -255,6 +254,8 @@ int **printPermutation(int n, int **permutacoes)
 
     return permutacoes;
 } 
+// Marcação. Essa marcação indica o fim das funções do algoritimo Johson and Trotter.
+
 
 /// Imprime a matriz que resulta no conflito
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito){
@@ -434,6 +435,7 @@ int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, in
 
 
     int i = 0;
+    // Percorre a subMatriz para calcular a quantidade de atributos
     while(i < linha){
         
         int k = 0;
@@ -441,6 +443,7 @@ int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, in
             if(subInt[i][1] == atributos[k])
                 break;
 
+            // Se o valor ainda não existe no vetor, ele salva ele. Caso exista, não faz nada.
             else if(subInt[i][1] != atributos[k] && atributos[k] == 0){
                 atributos[k] = subInt[i][1];
                 quantidade += 1;
@@ -458,6 +461,7 @@ int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, in
     return atributos;
 }
 
+/// Salva os valores dos atributos em um vetor
 char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, char *atributos){
     char quantidade = 0;
     for(int i = 0; i < linha+1; i++)
@@ -465,6 +469,7 @@ char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int l
 
 
     int i = 0;
+    // Percorre a subMatriz para calcular a quantidade de atributos
     while(i < linha){
         
         int k = 0;
@@ -472,6 +477,7 @@ char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int l
             if(subChar[i][1] == atributos[k])
                 break;
 
+            // Se o valor ainda não existe no vetor, ele salva ele. Caso exista, não faz nada.
             else if(subChar[i][1] != atributos[k] && atributos[k] == '0'){
                 atributos[k] = subChar[i][1];
                 quantidade += 1;
@@ -489,6 +495,7 @@ char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int l
     return atributos;
 }
 
+/// Cálcula quantas transações existe na matriz. 1,2,3
 int quantidadeDeTes(int *atributos){
     int quantidade = 0;
     
@@ -498,6 +505,7 @@ int quantidadeDeTes(int *atributos){
     return quantidade;
 }
 
+/// Cálcula quantos atributos existe na matriz. X,Y,Z
 int quantidadeDeAtributos(char *atributos){
     int quantidade = 0;
     
@@ -507,6 +515,7 @@ int quantidadeDeAtributos(char *atributos){
     return quantidade;
 }
 
+/// Cópia os valores da submatriz original para um submatriz auxiliar do tipo int
 int **copiaSubInt(int **subInt, int **subIntAux, int linha){
 
     for (int i = 0; i < linha; i++)
@@ -516,6 +525,7 @@ int **copiaSubInt(int **subInt, int **subIntAux, int linha){
     return subIntAux;
 }
 
+/// Cópia os valores da submatriz original para um submatriz auxiliar do tipo char
 char **copiaSubChar(char **subChar, char **subCharAux, int linha){
 
     for (int i = 0; i < linha; i++)
@@ -525,17 +535,20 @@ char **copiaSubChar(char **subChar, char **subCharAux, int linha){
     return subCharAux;
 }
 
-// Leitura inicial
+/// Verifica a primeira propriedade do algoritimo
 int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *z){
     int flag = 1;
     int auxT1, auxT2;
 
     int i = 0;
+    // Percorre a quantidade de atributos que a matriz possui
     while(i < qtdAtributos){
         //printf("D:%d e %d e %c\n", i, qtdAtributos, atributos[i]);
         auxT1 = -1;
         auxT2 = -1;
         for(int k = 0; k < linha; k++){
+
+            // Caso encontra uma escrita na submatriz original, salva o valor em auxT1
             if(subChar[k][0] == 'R' && subChar[k][1] == atributos[i]){
                 //printf("test1:%d\n", k);
                 auxT1 = subInt[k][1];
@@ -543,6 +556,7 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
             } 
         }
 
+        // Caso encontra uma escrita na submatriz ordenada pela permutação, salva o valor em auxT2
         for(int k = 0; k < linha; k++){
             if(subCharAux[k][0] == 'R' && subCharAux[k][1] == atributos[i]){
 
@@ -551,6 +565,8 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
             }
         }
         
+
+        // Vai todos os resultados no vetor z. Se ambos os valores batem, então a condição é aceita.
         z[i] = (auxT1 == auxT2 || auxT1 == -1 || auxT2 == -1) ? 1 : 0;
         printf("HereZ:%d e %d = %d | %c\n", auxT1, auxT2, z[i], atributos[i]);
 
@@ -558,6 +574,7 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
         i += 1;
     }
 
+    // Se em todos os casos a condição bate, então a flag não é marcada como zero
     for(int i = 0; i < qtdAtributos; i++){
         if(z[i] == 0)
             flag = 0;
@@ -567,21 +584,29 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
     return flag;
 }
 
-// Atualização na leitura
+/// Verifica a segunda propriedade do algoritimo de visão equivalente
 int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *x){
     printf("\n");
     int flag = 1;
     int auxT1 = -1, auxT2 = -1;
 
     int i = 0;
+    // Percorre a quantidade de atributos que a matriz possui
     while(i < qtdAtributos){
         //printf("D:%d e %d e %c\n", i, qtdAtributos, atributos[i]);
         auxT1 = -1;
         auxT2 = -1;
+
+        // Percorre a matriz
         for(int k = 0; k < linha; k++){
+
+            // Se encontrar uma escrtia com a transação certa ele entra no if
             if(subChar[k][0] == 'W' && subChar[k][1] == atributos[i]){
-                
+
+                // Percorre a matriz novamente do lugar de onde o k parou
                 for(int u = k; u < linha; u++){
+                    
+                    // Se encontrar uma letiura, significa que a propriedade foi aceita.
                     if(subChar[u][0] == 'R' && subChar[u][1] == atributos[i]){
                         
                         auxT1 = subInt[u][1];
@@ -590,9 +615,13 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
             }
         }
 
+        // Percorre a matriz
         for(int k = 0; k < linha; k++){
+            // Se encontrar uma escrtia com a transação certa ele entra no if
             if(subCharAux[k][0] == 'W' && subCharAux[k][1] == atributos[i]){
+                // Percorre a matriz novamente do lugar de onde o k parou
                 for(int u = k; u < linha; u++){
+                    // Se encontrar uma letiura, significa que a propriedade foi aceita.
                     if(subCharAux[u][0] == 'R' && subCharAux[u][1] == atributos[i]){
                         printf("%c e %c e %d\n", subCharAux[u][0], subCharAux[k][1], u);
                         auxT2 = subIntAux[u][1];
@@ -601,12 +630,14 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
             }
         }
 
+        // Vai todos os resultados no vetor x. Se ambos os valores batem, então a condição é aceita.
         x[i] = (auxT1 == auxT2) ? 1 : 0;
         printf("HereX:%d e %d = %d | %c\n", auxT1, auxT2, x[i], atributos[i]);
 
         i += 1;
     }
     
+    // Se em todos os casos a condição bate, então a flag não é marcada como zero
     for(int i = 0; i < qtdAtributos; i++){
         if(x[i] == 0)
             flag = 0;
@@ -615,8 +646,7 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
     return flag;
 }
 
-/// Verifica pela condição de escrita da visão equivalente.
-
+/// Verifica a terceira propriedade do algoritimo de visão equivalente
 int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c){
     int flag = 1;
     int auxT1 = -1, auxT2 = -1;
