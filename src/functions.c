@@ -1,34 +1,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "./functions.h"
-#include "./arrumaEntrada.h"
+#include "./../includes/functions.h"
+#include "./../includes/arrumaEntrada.h"
 
 #define COL 2
 
-/// Indica quantas vezes cada nodo do grafo pode fazer ligações
-int calculaVertices(int **inputNumeros){
-    FILE *file = fopen("./teste.in", "r");
-    rewind(file);
+
+/**
+ * Indica quantas vezes cada nodo do grafo pode fazer ligações
+ */
+int calculaVertices(int **inputNumeros, FILE *file){
     // Calcula a quantidade de linhas da matriz
     int quantidade = quantidadeDeLinhas(file);
 
+    rewind(file);
     int maior = 0;
     // Percorre a matriz para encontrar o maior numero
     for (int i = 0; i < quantidade; i++){
         // Após encontrar o maior número da matriz, esse número
         // indnica a quantidade máxima de nodos
+        printf("quantidade: %d\n", quantidade);
         if (inputNumeros[i][1] > maior){
             maior = inputNumeros[i][1];
         }
     }
 
 
-    fclose(file);
     return maior;
 }
 
-/// Aloca os dados da matriz do grafo
+/**
+ * Aloca os dados da matriz do grafo
+ */
 int **alocaMatrizDoGrafo(int **matriz, int tam){
 
     matriz = malloc((tam) * sizeof(int *)); // Aloca um vetor de linhas
@@ -45,7 +49,9 @@ int **alocaMatrizDoGrafo(int **matriz, int tam){
     return matriz;
 }
 
-/// Inicia a matriz do grafo
+/**
+ * Inicia a matriz do grafo
+ */
 int **iniciaMatriz(int tam, int **matriz){
     
     // Aloca na memória a matriz do grafo
@@ -59,13 +65,17 @@ int **iniciaMatriz(int tam, int **matriz){
     return matriz;
 }
 
-/// inicia o grafo
-struct Grafo *iniciaGrafo(int **inputNumeros){
+/**
+ * inicia o grafo
+ */
+struct Grafo *iniciaGrafo(int **inputNumeros, FILE *file){
     // Aloca o grafo na memória
     struct Grafo *grafo = malloc (sizeof (struct Grafo));
 
     // Aloca a quantidade de vezes que um nodo pode fazer uma ligação
-    grafo -> vertices = calculaVertices(inputNumeros);
+    rewind(file);
+    grafo -> vertices = calculaVertices(inputNumeros, file);
+    printf("teste: %d\n", grafo -> vertices);
 
     // Indica a quantidade de arcos que o grafo possuir
     grafo -> arcos = 0;
@@ -73,10 +83,13 @@ struct Grafo *iniciaGrafo(int **inputNumeros){
     // Inicia a matriz do grafo
     grafo -> matriz = iniciaMatriz(grafo -> vertices, grafo -> matriz); 
 
+	imprimeMatrizDoGrafo(grafo -> matriz, grafo -> vertices);
     return grafo;
 }
 
-/// Função que imprime a matriz do grafo
+/**
+ * Função que imprime a matriz do grafo
+ */
 void imprimeMatrizDoGrafo(int **matriz, int tam){
 
     // Percore todos os elemtnos da matriz do grafo e imprime todos eles
@@ -88,7 +101,9 @@ void imprimeMatrizDoGrafo(int **matriz, int tam){
     }
 }
 
-/// Desaloca os elementos da matriz do grafo
+/**
+ * Desaloca os elementos da matriz do grafo
+ */
 void liberaMatrizDoGrafo(int **matriz, int tam){
     // Libera todas as colunas
 	for (int i = 0; i < tam; i++){
@@ -99,7 +114,9 @@ void liberaMatrizDoGrafo(int **matriz, int tam){
 	free(matriz);
 }
 
-/// Insere algum elemento no grafo
+/**
+ * Insere algum elemento no grafo
+ */
 int **insereNoGrafo(struct Grafo *grafo, int linha, int coluna){
 
     // Caso o elemento a ser inserido seja 0, então o elemento muda para um, indicando uma ligação
@@ -113,20 +130,25 @@ int **insereNoGrafo(struct Grafo *grafo, int linha, int coluna){
 
 
 
+//Verifica se o arquivo existe
 // Daqui para cima são as funções do grafo
-// --------------------------------------------------------------//
-// Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
+//--------------------------------------------------------------
+//Daqui para baixo é os algoritimos de seriablidade e de visão equivalente
 
 
-/// O Algoritimo abaixo serve para fazer a permutação na visão equivalente. Até a próxima marcação, ainda é as funções do algoritimo Johson and Trotter.
+//O Algoritimo abaixo serve para fazer a permutação na visão equivalente. Até a próxima marcação, ainda é as funções do algoritimo Johson and Trotter.
 
-/// Algoritimo usado para fazer a permutação. Foi utilizado um algoritimo iterativo, porque eu precisava gravar os dados da permutação em uma matriz. Que serve para rodar em um loop no código. 
+//Algoritimo usado para fazer a permutação. Foi utilizado um algoritimo iterativo, porque eu precisava gravar os dados da permutação em uma //matriz. Que serve para rodar em um loop no código. 
+ 
 
 bool LEFT_TO_RIGHT = true; 
 bool RIGHT_TO_LEFT = false; 
 
-/// Utility functions for finding the 
-/// position of largest mobile integer in a[]. 
+
+/**
+ * Utility functions for finding the 
+ * position of largest mobile integer in a[]. 
+ */
 int searchArr(int a[], int n, int mobile) 
 { 
 	for (int i = 0; i < n; i++) 
@@ -135,8 +157,10 @@ int searchArr(int a[], int n, int mobile)
     return -1;
 } 
 
-/// To carry out step 1 of the algorithm i.e. 
-/// to find the largest mobile integer. 
+/**
+ * To carry out step 1 of the algorithm i.e. 
+ * to find the largest mobile integer. 
+ */
 int getMobile(int a[], bool dir[], int n) 
 { 
 	int mobile_prev = 0, mobile = 0; 
@@ -169,7 +193,10 @@ int getMobile(int a[], bool dir[], int n)
 		return mobile; 
 } 
 
-/// Prints a single permutation 
+
+/**
+ * Prints a single permutation 
+ */
 int *printOnePerm(int a[], bool dir[], int n, int *vetor) 
 { 
 	int mobile = getMobile(a, dir, n); 
@@ -212,9 +239,11 @@ int *printOnePerm(int a[], bool dir[], int n, int *vetor)
     return vetor;
 } 
 
-/// To end the algorithm for efficiency it ends 
-/// at the factorial of n because number of 
-/// permutations possible is just n!. 
+/**
+ * To end the algorithm for efficiency it ends 
+ * at the factorial of n because number of 
+ * permutations possible is just n!. 
+ */
 int fact(int n) 
 { 
 	int res = 1; 
@@ -223,8 +252,10 @@ int fact(int n)
 	return res; 
 } 
 
-/// This function mainly calls printOnePerm() 
-/// one by one to print all permutations. 
+/**
+ * This function mainly calls printOnePerm() 
+ * one by one to print all permutations. 
+ */
 int **printPermutation(int n, int **permutacoes) 
 { 
 	// To store current permutation 
@@ -257,7 +288,9 @@ int **printPermutation(int n, int **permutacoes)
 // Marcação. Essa marcação indica o fim das funções do algoritimo Johson and Trotter.
 
 
-/// Imprime a matriz que resulta no conflito
+/**
+ * Imprime a matriz que resulta no conflito
+ */
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito){
 
     printf("Conflito%d: %d %d %c %c e %d %d %c %c\n", conflito, inputNumeros[i][0], inputNumeros[i][1], inputChars[i][0], inputChars[i][1], inputNumeros[k][0], inputNumeros[k][1], inputChars[k][0], inputChars[k][1]);
@@ -265,9 +298,11 @@ void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int co
 
 }
 
-/// Função que roda o algoritimo de seriabilidade
-struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars){
-    FILE *file = fopen("./teste.in", "r");
+/**
+ * Função que roda o algoritimo de seriabilidade
+ */
+struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inputChars, FILE *file){
+    rewind(file);
     int tam = quantidadeDeLinhas(file);
     rewind(file);
 
@@ -319,13 +354,14 @@ struct Grafo *seriabilidade(struct Grafo *grafo, int **inputNumeros, char **inpu
         i += 1;
     }
 
-    fclose(file);
     return grafo;
 }
 
-/// Indica a quantidade de processos está acontecendo e separa eles em submatrizes
-int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars){
-    FILE *file = fopen("./teste.in", "r");
+/**
+ * Indica a quantidade de processos está acontecendo e separa eles em submatrizes
+ */
+int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars, FILE *file){
+    rewind(file);
     int tam = quantidadeDeLinhas(file)-1;
     int quantidade = 0;
 
@@ -340,14 +376,15 @@ int calculaQuantidadeDeSubMatrizes(int **inputNumeros, char **inputChars){
         i += 1;
     }    
 
-    fclose(file);
     return quantidade;
 
 }
 
-/// Calcula onde começa e onde terminar cada submatriz
-int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMat, int **inicioFim){
-    FILE *file = fopen("./teste.in", "r");
+/**
+ * Calcula onde começa e onde terminar cada submatriz
+ */
+int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMat, int **inicioFim, FILE *file){
+    rewind(file);
     int quantidade = quantidadeDeLinhas(file)-1;
     int fim = 0;
     int inicio = 0;
@@ -385,7 +422,9 @@ int **calculaInicioFimSubMatriz(int **inputNumeros, char **inputChars, int subMa
     return inicioFim;
 }
 
-/// DEpois de calcular o inicio e fim, aloca as submatrizes no lugar exato, tipo int
+/**
+ * DEpois de calcular o inicio e fim, aloca as submatrizes no lugar exato, tipo int
+ */
 int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i){
 
     int u = 0;
@@ -401,7 +440,9 @@ int **subMatrizInt(int **inputNumeros, int **inicioFim, int **subInt, int i){
     return subInt;
 }
 
-/// DEpois de calcular o inicio e fim, aloca as submatrizes no lugar exato, tipo char
+/**
+ * DEpois de calcular o inicio e fim, aloca as submatrizes no lugar exato, tipo char
+ */
 char **subMatrizChar(char **inputChars, int **inicioFim, char **subChar, int i){
 
     int u = 0;
@@ -416,7 +457,9 @@ char **subMatrizChar(char **inputChars, int **inicioFim, char **subChar, int i){
     return subChar;
 }
 
-/// Desaloca da memória a submatriz
+/**
+ * Desaloca da memória a submatriz
+ */
 void desalocaSubMatriz(int **matriz, int linha){
 
 	for (int i = 0; i < linha; i++){
@@ -426,7 +469,9 @@ void desalocaSubMatriz(int **matriz, int linha){
 
 }
 
-/// Calcula quantos transações está acontecendo, pode ser 1,2,3 etc...
+/**
+ * Calcula quantos transações está acontecendo, pode ser 1,2,3 etc...
+ */
 int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, int *atributos){
     int quantidade = 0;
     // Zera o vetor de atributos
@@ -461,7 +506,9 @@ int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, in
     return atributos;
 }
 
-/// Salva os valores dos atributos em um vetor
+/**
+ * Salva os valores dos atributos em um vetor
+ */
 char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int linha, char *atributos){
     char quantidade = 0;
     for(int i = 0; i < linha+1; i++)
@@ -495,7 +542,9 @@ char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int l
     return atributos;
 }
 
-/// Cálcula quantas transações existe na matriz. 1,2,3
+/**
+ * Cálcula quantas transações existe na matriz. 1,2,3
+ */
 int quantidadeDeTes(int *atributos){
     int quantidade = 0;
     
@@ -505,7 +554,9 @@ int quantidadeDeTes(int *atributos){
     return quantidade;
 }
 
-/// Cálcula quantos atributos existe na matriz. X,Y,Z
+/**
+ * Cálcula quantos atributos existe na matriz. X,Y,Z
+ */
 int quantidadeDeAtributos(char *atributos){
     int quantidade = 0;
     
@@ -515,7 +566,9 @@ int quantidadeDeAtributos(char *atributos){
     return quantidade;
 }
 
-/// Cópia os valores da submatriz original para um submatriz auxiliar do tipo int
+/**
+ * Cópia os valores da submatriz original para um submatriz auxiliar do tipo int
+ */
 int **copiaSubInt(int **subInt, int **subIntAux, int linha){
 
     for (int i = 0; i < linha; i++)
@@ -525,7 +578,9 @@ int **copiaSubInt(int **subInt, int **subIntAux, int linha){
     return subIntAux;
 }
 
-/// Cópia os valores da submatriz original para um submatriz auxiliar do tipo char
+/**
+ * Cópia os valores da submatriz original para um submatriz auxiliar do tipo char
+ */
 char **copiaSubChar(char **subChar, char **subCharAux, int linha){
 
     for (int i = 0; i < linha; i++)
@@ -535,7 +590,9 @@ char **copiaSubChar(char **subChar, char **subCharAux, int linha){
     return subCharAux;
 }
 
-/// Verifica a primeira propriedade do algoritimo
+/**
+ * Verifica a primeira propriedade do algoritimo
+ */
 int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *z){
     int flag = 1;
     int auxT1, auxT2;
@@ -584,7 +641,9 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
     return flag;
 }
 
-/// Verifica a segunda propriedade do algoritimo de visão equivalente
+/**
+ * Verifica a segunda propriedade do algoritimo de visão equivalente
+ */
 int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *x){
     printf("\n");
     int flag = 1;
@@ -646,7 +705,9 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
     return flag;
 }
 
-/// Verifica a terceira propriedade do algoritimo de visão equivalente
+/**
+ * Verifica a terceira propriedade do algoritimo de visão equivalente
+ */
 int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *c){
     int flag = 1;
     int auxT1 = -1, auxT2 = -1;
@@ -821,21 +882,43 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
     return flag;
 }
 
+/**
+ * Ordena o vetor, para imprimir em ordem crescente no final
+ */
 
-/// Imprime o output final, indicando o resultado de ambos os algoritimos.
+int *ordenaVetor(int *tes, int qtd){
+    int i, j, temp;     
+    for(i = 0; i < qtd && tes[i] != 0; i++)
+        for(j = 1; j < qtd-i && tes[j] != 0; j++)
+		    if(tes[j-1] > tes[j]){
+			    temp = tes[j-1];
+				tes[j-1] = tes[j];
+				tes[j] = temp;
+			}  
+
+    return tes;
+}
+
+/**
+ * Imprime o output final, indicando o resultado de ambos os 
+ * algoritimos.
+ */
 void imprimeResultadoFinal(struct Grafo *grafo, int *tes, int i, int qtd, int flag){
     int serial = 0;
     int inicio = tes[0] - 1;
+    FILE *file = stdout;
+
     printf("test:%d e %d\n", tes[qtd-1] - 1, inicio);
     printf("Vertices:%d\n", grafo -> vertices);
 
-    printf("%d ", i);
+    printf("%d ", i+1);
+    tes = ordenaVetor(tes, qtd);
     // Imprime um indíce ID
     for(int k = 0; k < qtd && tes[k] != 0; k++)
         if(tes[k+1] == 0)
-            printf("%d ", tes[k]);
+            fprintf(file, "%d", tes[k]);
         else
-            printf("%d,", tes[k]);
+            fprintf(file, "%d,", tes[k]);
     
 
     // Imprime o vetor de transações
@@ -849,23 +932,24 @@ void imprimeResultadoFinal(struct Grafo *grafo, int *tes, int i, int qtd, int fl
 
     // Imprime o NS, SS E SV,NV
     if (serial == 1)
-        printf("NS ");
+        fprintf(file, "%s", " NS");
     else
-        printf("SS ");
+        fprintf(file, "%s", " SS");
 
     if (flag == 1)
-        printf("SV ");
+        fprintf(file, "%s", " SV");
     else
-        printf("NV ");
+        fprintf(file, "%s", " NV");
 
     printf("\n\n");
 }
 
-
-/// Função que faz o algoritimo da visão equivalente
-struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars){
+/**
+ * Função que faz o algoritimo da visão equivalente
+ */
+struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **inputChars, FILE *file){
     // Calcula quantas submatrizes existem
-    int subMat = calculaQuantidadeDeSubMatrizes(inputNumeros, inputChars);
+    int subMat = calculaQuantidadeDeSubMatrizes(inputNumeros, inputChars, file);
     int flags[subMat];
     int **inicioFim = NULL;
     int **subInt = NULL;
@@ -877,11 +961,12 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
     // Percore pela quantidade de submatrizes
     while(i < subMat){
         // Calcula onde começa o inicio e o fim de cada submatriz
-        inicioFim = calculaInicioFimSubMatriz(inputNumeros, inputChars, subMat, inicioFim);
+        inicioFim = calculaInicioFimSubMatriz(inputNumeros, inputChars, subMat, inicioFim, file);
         printf("inicio:%d e Fim:%d\n", inicioFim[i][0], inicioFim[i][1]);
 
 
         int linha = inicioFim[i][1] - inicioFim[i][0];
+        rewind(file);
         if(linha > 0){
             // Aloca matrizes
             subInt = alocaMatriz(linha+1, subInt);
@@ -918,10 +1003,10 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
 
 
             // Desaloca todas as matrizes e vetores alocados
-            desalocaSubMatriz((int **) subInt, linha+1);
+            /*desalocaSubMatriz((int **) subInt, linha+1);
             desalocaSubMatriz((int **) subChar, linha+1);
             free(tes);
-            free(atributos);
+            free(atributos);*/
         }
 
         // Desaloca a matriz também

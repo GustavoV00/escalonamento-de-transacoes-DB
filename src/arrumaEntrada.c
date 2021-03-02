@@ -1,13 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "arrumaEntrada.h"
+#include "./../includes/arrumaEntrada.h"
 
 /// Define do tamanho da matriz de entrada.
 #define COL 2
 
 
-/// Verifica se o arquivo existe
+/**
+ * Verifica se o arquivo existe
+ */
 int verificaNulo(FILE *file){
 
 	// Verifica se o arquivo existe
@@ -18,10 +20,21 @@ int verificaNulo(FILE *file){
 
 }
 
-/// Abre o arquivo de entrada e cálcula a quantidade de linhas
+void resetaFile (){
+	if( fseek(stdin, 0L, SEEK_SET) ) {
+    	perror("stdin");
+ 	   	exit(EXIT_FAILURE);
+	}
+}
+
+
+/**
+ * Abre o arquivo de entrada e cálcula a quantidade de linhas
+ */
 int quantidadeDeLinhas(FILE *file){
 	int quantidade = 0;
 	char ch;
+
 
 	// Para cada quebra de linha, conta como se fosse uma linha
 	while((ch = fgetc(file)) != EOF){
@@ -32,7 +45,10 @@ int quantidadeDeLinhas(FILE *file){
 	return quantidade + 1;
 }
 
-/// Aloca os dados do tipo inteiro, para o arquivo de entrada
+
+/**
+ * Aloca os dados do tipo inteiro, para o arquivo de entrada
+ */
 int **alocaMatriz(int linhas, int **input){
 	// Aloca um vetor de linha
 	input = malloc((linhas) * sizeof(int *)); 
@@ -49,8 +65,9 @@ int **alocaMatriz(int linhas, int **input){
 	return input;
 }
 
-
-/// Aloca os dados do tipo char, para o arquivo de entrada.
+/**
+ * Aloca os dados do tipo char, para o arquivo de entrada.
+ */
 char **alocaMatrizChar(int linhas, char **input){
 	input = malloc((linhas) * sizeof(char *)); // Aloca um vetor de linhas
 
@@ -68,7 +85,9 @@ char **alocaMatrizChar(int linhas, char **input){
 }
 
 
-/// Imprime a matriz do tipo inteiro, para o arquivo de entrada
+/**
+ * Imprime a matriz do tipo inteiro, para o arquivo de entrada
+ */
 void imprimeMatriz(int **input, int linhas){
 
 	// Percode as linhas da matriz
@@ -83,7 +102,9 @@ void imprimeMatriz(int **input, int linhas){
 
 }
 
-/// Imprime a matriz do tipo char, para o arquivo de entrada
+/**
+ * Imprime a matriz do tipo char, para o arquivo de entrada
+ */
 void imprimeMatrizChar(char **input, int linhas){
 
 	// Percode as linhas da matriz
@@ -99,7 +120,10 @@ void imprimeMatrizChar(char **input, int linhas){
 
 }
 
-/// Pega os dados de entrada do tipo inteiro e coloca na matriz do tipo int
+
+/**
+ * Pega os dados de entrada do tipo inteiro e coloca na matriz do tipo int
+ */
 int **alocaValoresDeEntrada(int **input, int linhas, FILE *file){
 	int lin = 0;
 	char buffer[255];
@@ -134,7 +158,9 @@ int **alocaValoresDeEntrada(int **input, int linhas, FILE *file){
 	return input;
 }
 
-/// Aloca os dados de entrada do arquivo na matriz do tipo char
+/**
+ * Aloca os dados de entrada do arquivo na matriz do tipo char
+ */
 char **alocaValoresDeEntradaChar(char **input, int linhas, FILE *file){
 	int lin = 0;
 	char buffer[255];
@@ -159,12 +185,13 @@ char **alocaValoresDeEntradaChar(char **input, int linhas, FILE *file){
 	return input;
 }
 
-/// Aloca os dados de entrada do tipo int, em uma matriz do tipo int
-int** alocaDadosDeEntradaInt(int **input){
-	FILE *file = fopen("./teste.in", "r");
-	
+/**
+ * Aloca os dados de entrada do tipo int, em uma matriz do tipo int
+ */
+int** alocaDadosDeEntradaInt(int **input, FILE *file){
 	if(verificaNulo(file) == 1){
 		// Conta a quantidade de linhas
+		rewind(file);
 		int linhas = quantidadeDeLinhas(file);
 
 		// Aloca os dados de uma matriz do tipo char
@@ -174,6 +201,7 @@ int** alocaDadosDeEntradaInt(int **input){
 		rewind(file);
 
 		// Aloca os dados de entrada do arquivo na matriz
+
 		input = alocaValoresDeEntrada(input, linhas, file);
 
 		// Imprime a matriz de dados
@@ -183,18 +211,16 @@ int** alocaDadosDeEntradaInt(int **input){
 		printf("Arquivo Inexistente\n");
 
 
-	fclose(file);
 	return input;
 }
 
-
-/// Aloca os dados de entrada do tipo CHAR, em uma matriz do tipo char
-char** alocaDadosDeEntradaChar(char **input){
-	FILE *file = fopen("./teste.in", "r");
-	
-	// 
+/**
+ * Aloca os dados de entrada do tipo CHAR, em uma matriz do tipo char
+ */
+char** alocaDadosDeEntradaChar(char **input, FILE *file){
 	if(verificaNulo(file) == 1){
 		// Conta a quantidade de linhas
+		rewind(file);
 		int linhas = quantidadeDeLinhas(file);
 
 		// Aloca os dados de uma matriz do tipo char
@@ -214,16 +240,14 @@ char** alocaDadosDeEntradaChar(char **input){
 		printf("Arquivo Inexistente\n");
 
 
-	fclose(file);
 	return input;
 }
 
 
-/// Desaloca os dados da matriz 
-void liberaMatriz (int **input){
-	FILE *file = fopen("./teste.in", "r");
-	rewind(file);
-
+/**
+ * Desaloca os dados da matriz 
+ */
+void liberaMatriz (int **input, FILE *file){
 	// Desaloca os dados da linha
 	for (int i = 0; i < quantidadeDeLinhas(file)-1; i++){
 		free(input[i]);
@@ -231,6 +255,5 @@ void liberaMatriz (int **input){
 
 	free(input);
 
-	fclose(file);
 
 }
