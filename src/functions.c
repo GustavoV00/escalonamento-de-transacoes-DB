@@ -74,7 +74,7 @@ struct Grafo *iniciaGrafo(int **inputNumeros, FILE *file){
     // Aloca a quantidade de vezes que um nodo pode fazer uma ligação
     rewind(file);
     grafo -> vertices = calculaVertices(inputNumeros, file);
-    printf("teste: %d\n", grafo -> vertices);
+    //printf("teste: %d\n", grafo -> vertices);
 
     // Indica a quantidade de arcos que o grafo possuir
     grafo -> arcos = 0;
@@ -92,12 +92,12 @@ struct Grafo *iniciaGrafo(int **inputNumeros, FILE *file){
 void imprimeMatrizDoGrafo(int **matriz, int tam){
 
     // Percore todos os elemtnos da matriz do grafo e imprime todos eles
-    for (int i = 0; i < tam; i++){
+   /*for (int i = 0; i < tam; i++){
         for (int j = 0; j < tam; j++)
             printf("%d ", matriz[i][j]);
 
         printf("\n");
-    }
+    }*/
 }
 
 /**
@@ -231,10 +231,9 @@ int *printOnePerm(int a[], bool dir[], int n, int *vetor)
 	} 
 
 	for (int i = 0; i < n; i++){
-		printf("%d ", a[i]);
+		//printf("%d ", a[i]);
         vetor[i] = a[i];
     }
-    printf("\n");
     return vetor;
 } 
 
@@ -292,7 +291,7 @@ int **printPermutation(int n, int **permutacoes)
  */
 void imprimeConflito(int **inputNumeros, char **inputChars, int i, int k, int conflito){
 
-    printf("Conflito%d: %d %d %c %c e %d %d %c %c\n", conflito, inputNumeros[i][0], inputNumeros[i][1], inputChars[i][0], inputChars[i][1], inputNumeros[k][0], inputNumeros[k][1], inputChars[k][0], inputChars[k][1]);
+    //printf("Conflito%d: %d %d %c %c e %d %d %c %c\n", conflito, inputNumeros[i][0], inputNumeros[i][1], inputChars[i][0], inputChars[i][1], inputNumeros[k][0], inputNumeros[k][1], inputChars[k][0], inputChars[k][1]);
     
 
 }
@@ -498,9 +497,6 @@ int *calculaQuantosTTExistemNaMatriz(int **subInt, char **subChar, int linha, in
         i += 1;
     }
 
-    for(int k = 0; k < linha; k++)
-        printf("%d ", atributos[k]);
-    printf("\n");
         
     return atributos;
 }
@@ -534,9 +530,6 @@ char *calculaQuantosAtributosExistemNaMatriz(int **subInt, char **subChar, int l
         i += 1;
     }
 
-    for(int k = 0; k < linha; k++)
-        printf("%c ", atributos[k]);
-    printf("\n\n");
         
     return atributos;
 }
@@ -624,7 +617,6 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
 
         // Vai todos os resultados no vetor z. Se ambos os valores batem, então a condição é aceita.
         z[i] = (auxT1 == auxT2 || auxT1 == -1 || auxT2 == -1) ? 1 : 0;
-        printf("HereZ:%d e %d = %d | %c\n", auxT1, auxT2, z[i], atributos[i]);
 
 
         i += 1;
@@ -644,7 +636,6 @@ int verificaCondicaoUm(int **subInt, int **subIntAux, char **subChar, char **sub
  * Verifica a segunda propriedade do algoritimo de visão equivalente
  */
 int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **subCharAux, int linha, char *atributos, int qtdAtributos, int *x){
-    printf("\n");
     int flag = 1;
     int auxT1 = -1, auxT2 = -1;
 
@@ -681,7 +672,6 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
                 for(int u = k; u < linha; u++){
                     // Se encontrar uma letiura, significa que a propriedade foi aceita.
                     if(subCharAux[u][0] == 'R' && subCharAux[u][1] == atributos[i]){
-                        printf("%c e %c e %d\n", subCharAux[u][0], subCharAux[k][1], u);
                         auxT2 = subIntAux[u][1];
                     } 
                 }
@@ -690,7 +680,6 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
 
         // Vai todos os resultados no vetor x. Se ambos os valores batem, então a condição é aceita.
         x[i] = (auxT1 == auxT2) ? 1 : 0;
-        printf("HereX:%d e %d = %d | %c\n", auxT1, auxT2, x[i], atributos[i]);
 
         i += 1;
     }
@@ -700,7 +689,6 @@ int verificaCondicaoDois(int **subInt, int **subIntAux, char **subChar, char **s
         if(x[i] == 0)
             flag = 0;
     }
-    printf("\n");
     return flag;
 }
 
@@ -733,7 +721,6 @@ int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **s
         
         // Vai todos os resultados no vetor c. Se ambos os valores batem, então a condição é aceita.
         c[i] = (auxT1 == auxT2 || auxT1 == -1 || auxT2 == -1) ? 1 : 0;
-        printf("HereC:%d e %d = %d | %c\n", auxT1, auxT2, c[i], atributos[i]);
 
         i += 1;
     }
@@ -743,7 +730,6 @@ int verificaCondicaoTres(int **subInt, int **subIntAux, char **subChar, char **s
         if(c[i] == 0)
             flag = 0;
     }
-    printf("\n");
     return flag;
 }
 
@@ -790,7 +776,6 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
 
 
     // Como as permutações vem sempre com o indice 1,2,3 etc... Caso tenha mais de uma submatriz, então os "fors" abaixo, server para arrumar os indices. 
-    printf("\n");
     for(int i = 1; i < quantidade; i++){
         for(int j = 0; j < qtdtes; j++){
             indice = permutacoes[i][j];
@@ -799,15 +784,7 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
         }
     }
 
-    printf("\n");
-    for(int i = 0; i < quantidade; i++){
-        printf("%d -> ", i);
-        for(int j = 0; j < qtdtes; j++){
-            printf("%d ", permutacoes[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n\n");
+
 
     // Aloca a primeira propriedade
     int *z = malloc(quantidade * sizeof(int));
@@ -829,7 +806,6 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
         int u = 0;
         // While que percorre todos os elementos da linha da matriz permutação
         while(u < qtdtes){
-            printf("\nTest:%d \n", permutacoes[i][u]);
             // For que percorre a submatriz
             for(int k = 0; k < linha; k++){
                 // If faz a verificação se os indices i,j da matriz permutação estão correspondende com a submatriz subIntAux. Verificando se as transações são as mesmas para fazer a ordenação.
@@ -874,21 +850,14 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
         if(z[i] == 1 && x[i] == 1 && c[i] == 1)
             flag = 1;
 
-        printf("z = %d, x = %d, c = %d | %d\n", z[i], x[i], c[i], flag);
 
-        printf("\n");
-        imprimeMatriz(subIntAux, linha);
-        printf("\n");
-        imprimeMatrizChar(subCharAux, linha);
-        printf("\n");
+
         i += 1;
-        printf("----------------------------------------\n");
     }
 
     // Desaloca os vetores e matrizes
     desalocaSubMatriz((int **) subIntAux, linha);
     desalocaSubMatriz((int **) subCharAux, linha);
-    printf("\n");
     free(z);
     free(x);
     free(c);
@@ -921,10 +890,7 @@ void imprimeResultadoFinal(struct Grafo *grafo, int *tes, int i, int qtd, int fl
     int inicio = tes[0] - 1;
     FILE *file = stdout;
 
-    printf("test:%d e %d\n", tes[qtd-1] - 1, inicio);
-    printf("Vertices:%d\n", grafo -> vertices);
-
-    printf("%d ", i+1);
+    fprintf(file, "%d ", i+1);
     tes = ordenaVetor(tes, qtd);
     // Imprime um indíce ID
     for(int k = 0; k < qtd && tes[k] != 0; k++)
@@ -954,7 +920,7 @@ void imprimeResultadoFinal(struct Grafo *grafo, int *tes, int i, int qtd, int fl
     else
         fprintf(file, "%s", " NV");
 
-    printf("\n\n");
+    fprintf(file, "\n");
 }
 
 /**
@@ -968,14 +934,13 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
     int **subInt = NULL;
     char **subChar = NULL;
 
-    printf("%d\n", subMat);
 
     int i = 0;
+    int k = 0;
     // Percore pela quantidade de submatrizes
     while(i < subMat){
         // Calcula onde começa o inicio e o fim de cada submatriz
         inicioFim = calculaInicioFimSubMatriz(inputNumeros, inputChars, subMat, inicioFim, file);
-        printf("inicio:%d e Fim:%d\n", inicioFim[i][0], inicioFim[i][1]);
 
 
         int linha = inicioFim[i][1] - inicioFim[i][0];
@@ -1000,26 +965,20 @@ struct Grafo *visaoEquivalente(struct Grafo *grafo, int **inputNumeros, char **i
             // Calcula quantas atributos possuem, X,Y,Z etc...
             atributos = calculaQuantosAtributosExistemNaMatriz(subInt, subChar, linha, atributos);
 
-            //imprimeMatriz(subInt, linha+1);
-            printf("\n");
-            //imprimeMatrizChar(subChar, linha+1);
-            printf("\n");
+
 
 
             // Cria uma flag se existe uma visao equivalente. Toda a parte de cima arruma as entradas para rodar o algoritimo
             flags[i] = testaAlgoritimoNaSubMatriz(subInt, subChar, linha+1, tes, atributos);
-            printf("Flags: %d \n", flags[i]);
-            printf("----------------------------------------\n");
 
-            imprimeResultadoFinal(grafo, tes, i, qtdTes, flags[i]);
-
-
+            imprimeResultadoFinal(grafo, tes, k, qtdTes, flags[i]);
 
             // Desaloca todas as matrizes e vetores alocados
-            /*desalocaSubMatriz((int **) subInt, linha+1);
+            desalocaSubMatriz((int **) subInt, linha+1);
             desalocaSubMatriz((int **) subChar, linha+1);
             free(tes);
-            free(atributos);*/
+            free(atributos);
+            k += 1;
         }
 
         // Desaloca a matriz também

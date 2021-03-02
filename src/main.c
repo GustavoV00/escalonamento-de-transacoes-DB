@@ -14,14 +14,12 @@ int main(){
 
 	// Cria uma matriz do tipo inteiro, do arquivo de entrada do tipo int
 	inputNumeros = alocaDadosDeEntradaInt(inputNumeros, file);
-	printf("\n");
 
 	// Cria uma matriz do tipo char, do arquivo de entrada do tipo char
 	inputChars = alocaDadosDeEntradaChar(inputChars, file);
 
 	// Inicia o grafo
 	grafo = iniciaGrafo(inputNumeros, file);
-	printf("\n");
 
 	// Testa o algoritimo de seriabilidade
 	grafo = seriabilidade(grafo, inputNumeros, inputChars, file);

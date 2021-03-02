@@ -91,14 +91,14 @@ char **alocaMatrizChar(int linhas, char **input){
 void imprimeMatriz(int **input, int linhas){
 
 	// Percode as linhas da matriz
-	for (int i = 0; i < linhas; i++){
+	/*for (int i = 0; i < linhas; i++){
 		printf("%d -> ", i);
 		// Percorre as colunas da matriz
 		for (int j = 0; j < COL; j++){
 			printf("%d ", input[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
 
 }
 
@@ -108,7 +108,7 @@ void imprimeMatriz(int **input, int linhas){
 void imprimeMatrizChar(char **input, int linhas){
 
 	// Percode as linhas da matriz
-	for (int i = 0; i < linhas; i++){
+	/*for (int i = 0; i < linhas; i++){
 		printf("%d -> ", i);
 
 		// Percorre as colunas da matriz
@@ -116,7 +116,7 @@ void imprimeMatrizChar(char **input, int linhas){
 			printf("%c ", input[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
 
 }
 
