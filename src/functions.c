@@ -20,7 +20,6 @@ int calculaVertices(int **inputNumeros, FILE *file){
     for (int i = 0; i < quantidade; i++){
         // Após encontrar o maior número da matriz, esse número
         // indnica a quantidade máxima de nodos
-        printf("quantidade: %d\n", quantidade);
         if (inputNumeros[i][1] > maior){
             maior = inputNumeros[i][1];
         }
@@ -232,10 +231,10 @@ int *printOnePerm(int a[], bool dir[], int n, int *vetor)
 	} 
 
 	for (int i = 0; i < n; i++){
-		//printf("%d ", a[i]);
+		printf("%d ", a[i]);
         vetor[i] = a[i];
     }
-    //printf("\n");
+    printf("\n");
     return vetor;
 } 
 
@@ -280,7 +279,7 @@ int **printPermutation(int n, int **permutacoes)
 		dir[i] = RIGHT_TO_LEFT; 
 
 	// for generating permutations in the order. 
-	for (int i = 1; i < fact(n); i++) 
+	for (int i = 1; i < fact(n); i++)
 		permutacoes[i] = printOnePerm(a, dir, n, permutacoes[i]); 
 
     return permutacoes;
@@ -766,6 +765,9 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
     // Indica quantas transações existem
     int qtdtes = quantidadeDeTes(tes);
 
+    // Ordena o vetor de transações
+    tes = ordenaVetor(tes, qtdtes);
+
     // Indica quantos atributos existem
     int qtdAtributos = quantidadeDeAtributos(atributos);
     for (int i = 0; i < qtdtes; i++)
@@ -777,24 +779,35 @@ int testaAlgoritimoNaSubMatriz(int **subInt, char **subChar, int linha, int *tes
 
     // Aloca uma matriz que vai caber todas as permutações
     permutacoes = alocaMatriz(quantidade, permutacoes);
+    
     // Coloca as permutações na matriz permutações
     permutacoes = printPermutation(qtdtes, permutacoes);
 
     // Calcula quantas permutações existem
-    for(int i = 0; i < maior; i++)
-        permutacoes[0][i] = i+1;
+    for(int i = 0; i < qtdtes; i++)
+        permutacoes[0][i] = tes[i];
 
-    printf("\n\n");
+
 
     // Como as permutações vem sempre com o indice 1,2,3 etc... Caso tenha mais de uma submatriz, então os "fors" abaixo, server para arrumar os indices. 
-    for(int i = 0; i < quantidade; i++){
+    printf("\n");
+    for(int i = 1; i < quantidade; i++){
         for(int j = 0; j < qtdtes; j++){
             indice = permutacoes[i][j];
             permutacoes[i][j] = tes[indice-1];
+            
+        }
+    }
+
+    printf("\n");
+    for(int i = 0; i < quantidade; i++){
+        printf("%d -> ", i);
+        for(int j = 0; j < qtdtes; j++){
             printf("%d ", permutacoes[i][j]);
         }
         printf("\n");
     }
+    printf("\n\n");
 
     // Aloca a primeira propriedade
     int *z = malloc(quantidade * sizeof(int));

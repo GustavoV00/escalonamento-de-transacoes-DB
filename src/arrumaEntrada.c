@@ -127,31 +127,43 @@ void imprimeMatrizChar(char **input, int linhas){
 int **alocaValoresDeEntrada(int **input, int linhas, FILE *file){
 	int lin = 0;
 	char buffer[255];
-	char aux[3];
+	char aux[5];
+	char aux2[5];
 
 	// Faz um loop pelo arquivo de entrada
 	while(fgets(buffer, 255, file)){
 		int col = 1;
 		int i = 0;
+		int k = 0;
+		int flag = 0;
 		// Nega os espaços em branco e pega apenas os numeros
-		while(buffer[i] != ' '){
-			aux[i] = buffer[i];
-			i += 1;
-		}
-		// Como os dados lidos por um arquivo é do tipo char 
-		// o atoi serve para transformar do tipo inteiro
-		input[lin][0] = atoi(aux);
-		
-		// Não lembro o que isso faz
-		// Mas se n estou enganado, serve para quando o primeiro 
-		// elemento da matriz de entrada for maior que 9
-		while(col < COL){
-			if (buffer[i] != ' '){
-				input[lin][col] = buffer[i] - 48;
-				col += 1;
+		while(flag != 2){
+			if (flag == 0){
+				aux[k] = buffer[i];
+				if(buffer[i] == ' '){
+					flag = 1;
+					k = -1;
+				} 
+
 			}
+			else if(flag == 1){
+				aux2[k] = buffer[i];
+				if(buffer[i] == ' ')
+					flag = 2;
+
+			}
+			
+
 			i += 1;
+			k += 1;
 		}
+		//printf("aux: %s\n", aux);
+		//printf("aux2: %s\n", aux2);
+		// Como os dados lidos por um arquivo é do tipo char 
+		// o atoi serve para transformar um char para um int
+		input[lin][0] = atoi(aux);
+		input[lin][1] = atoi(aux2);
+		//printf("%d e %d\n", input[lin][0], input[lin][1]);
 		lin += 1;
 	}
 
