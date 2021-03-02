@@ -4,7 +4,7 @@
 #include "./../includes/functions.h"
 
 
-int main(int argc, char *argv[]){
+int main(){
 	int  **inputNumeros = NULL;
 	char **inputChars = NULL;
 	struct Grafo *grafo;
